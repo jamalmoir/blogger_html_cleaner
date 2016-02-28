@@ -12,6 +12,9 @@ def main():
     # remove the multitude of useless spans
     text = replace_regex(r'<\/?span[^>]*>', '', text)
 
+    #remove &nbsp;
+    text = replace_regex(r'&nbsp;', ' ', text)
+
     # put headings on one line
     text = replace_regex(r'<h([1-5])>\n([^<]*)<\/h\1>',
                          r'\n<h\1>\2</h\1>', text)
