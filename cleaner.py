@@ -19,12 +19,15 @@ def main():
     text = replace_regex(r'<h([1-5])>\n([^<]*)<\/h\1>',
                          r'\n<h\1>\2</h\1>', text)
 
-    # remove class blob-wrapper divs
-    text = replace_regex(r'(<div class="blob-wrapper[^>]*>)'
-                         '(.*?(?=<\/div>))(<\/div>)', r'\2', text)
+    # remove class divs
+    text = replace_regex(r'<\/?div[^>]*>', '', text)
 
     # remove div encapsulated brs
     text = replace_regex(r'<div>\s*<br \/>\s*<\/div>', '</ br>', text)
+
+    #remove brs within heading tags
+    text = replace_regex(r'<h([1-5])>\s*(<br \/>)([^<]*)<\/h\1>',
+                        r'<h\1>\3</h\1>', text)
 
     # remove empty tags eg <pre></pre>
     text = replace_regex(r'<([^>]*)>\s*<\/\1>', '', text)
