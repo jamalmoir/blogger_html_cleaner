@@ -18,12 +18,22 @@ def main():
     blob_removed = replace_regex(r'(<div class="blob-wrapper[^>]*>)'
                                 '(.*?(?=<\/div>))(<\/div>)', r'\2',
                                 heading_fixed)
+    #remove div encapsulated brs
+    divbr_removed = replace_regex(r'<div>\s*<br \/>\s*<\/div>', '</ br>',
+                                 blob_removed)
     # remove empty tags eg <pre></pre>
-    empty_removed = replace_regex(r'<([^>]*)>[\s\n\r]*<\/\1>', '', blob_removed)
-
+    empty_removed = replace_regex(r'<([^>]*)>\s*<\/\1>', '', divbr_removed)
 
     with open(dirty_file + '_cleaned', 'w+') as f:
-        f.write(empty_removed)
+        f.write(fix_formatting(empty_removed))
+
+def fix_formatting(text):
+    # make sure <br \> tags have one line above and below
+    br_fixed = replace_regex(r'(\s*<br \/>\s*)', r'\n\1\n', text)
+    #remove multiple \n
+    multin_removed = replace_regex(r'\n{2,}', r'\n', br_fixed)
+
+    return multin_removed
 
 def replace_regex(regex, repl, text):
     """Replaces all occurances of a regex pattern regex, in text"""
