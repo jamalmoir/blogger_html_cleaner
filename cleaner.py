@@ -10,30 +10,37 @@ def main():
         text = f.read()
 
     # remove the multitude of useless spans
-    span_removed = replace_regex(r'<\/?span[^>]*>', '', text)
+    text = replace_regex(r'<\/?span[^>]*>', '', text)
+
     # put headings on one line
-    heading_fixed = replace_regex(r'<h([1-5])>\n([^<]*)<\/h\1>',
-                                  r'\n<h\1>\2</h\1>', span_removed)
+    text = replace_regex(r'<h([1-5])>\n([^<]*)<\/h\1>',
+                         r'\n<h\1>\2</h\1>', text)
+
     # remove class blob-wrapper divs
-    blob_removed = replace_regex(r'(<div class="blob-wrapper[^>]*>)'
-                                '(.*?(?=<\/div>))(<\/div>)', r'\2',
-                                heading_fixed)
-    #remove div encapsulated brs
-    divbr_removed = replace_regex(r'<div>\s*<br \/>\s*<\/div>', '</ br>',
-                                 blob_removed)
+    text = replace_regex(r'(<div class="blob-wrapper[^>]*>)'
+                         '(.*?(?=<\/div>))(<\/div>)', r'\2', text)
+
+    # remove div encapsulated brs
+    text = replace_regex(r'<div>\s*<br \/>\s*<\/div>', '</ br>', text)
+
     # remove empty tags eg <pre></pre>
-    empty_removed = replace_regex(r'<([^>]*)>\s*<\/\1>', '', divbr_removed)
+    text = replace_regex(r'<([^>]*)>\s*<\/\1>', '', text)
 
     with open(dirty_file + '_cleaned', 'w+') as f:
-        f.write(fix_formatting(empty_removed))
+        f.write(fix_formatting(text))
+
 
 def fix_formatting(text):
-    # make sure <br \> tags have one line above and below
-    br_fixed = replace_regex(r'(\s*<br \/>\s*)', r'\n\1\n', text)
-    #remove multiple \n
-    multin_removed = replace_regex(r'\n{2,}', r'\n', br_fixed)
+    """Fixes aesthetic formatting of text"""
 
-    return multin_removed
+    # make sure <br \> tags have one line above and below
+    text = replace_regex(r'(\s*<br \/>\s*)', r'\n\1\n', text)
+
+    # remove multiple \n
+    text = replace_regex(r'\n{2,}', r'\n', text)
+
+    return text
+
 
 def replace_regex(regex, repl, text):
     """Replaces all occurances of a regex pattern regex, in text"""
