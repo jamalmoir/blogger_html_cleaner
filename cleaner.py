@@ -32,6 +32,9 @@ def main():
     # remove empty tags eg <pre></pre>
     text = replace_regex(r'<([^>]*)>\s*<\/\1>', '', text)
 
+    #remove unclosed HTML tags
+    text = remove_unclosed(text)
+
     with open(dirty_file + '_cleaned', 'w+') as f:
         f.write(fix_formatting(text))
 
@@ -54,6 +57,49 @@ def replace_regex(regex, repl, text):
     replaced = replacer.sub(repl, text)
 
     return replaced
+
+def remove_unclosed(text):
+    """removed all unclosed HTML tags"""
+    unclosed = find_next_unclosed(text)
+
+    if unclosed:
+        start, end = unclosed
+        text = text[:start].append(text[end:])
+
+        return remove_unclosed(text)
+
+    return text
+
+
+def find_next_unclosed(text):
+    """Finds the next unclosed HTML tag"""
+    tag_stack = []
+
+    tag_regex= re.compile(r'(<[^>]*>)', re.DOTALL)
+    tags = tag_regex.finditer(text)
+
+    for tag in tags:
+        print(tag_stack)
+        #If it is a closing tag check if it matches the last opening tag
+        if re.match(r'<\/[^>]*>', tag.group()):
+
+            if tag_match(tag_stack[-1].group(), tag.group()):
+                tag_stack.pop()
+            else:
+                unclosed = tag_stack.pop()
+                return (unclosed.start, unclosed.end)
+        else:
+            tag_stack.append(tag)
+
+
+def tag_match(tag1, tag2):
+    if get_pure_tag(tag1)[1:] == get_pure_tag(tag2)[2:]:
+        return True
+
+def get_pure_tag(tag):
+    pure_tag = re.sub(r'<(\/?\S*)[^>]*>', r'<\1>', tag)
+
+    return pure_tag
 
 if __name__ == '__main__':
     main()
