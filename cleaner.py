@@ -9,30 +9,30 @@ def main():
     with open(dirty_file) as f:
         text = f.read()
 
-    # remove the multitude of useless spans
+    # Remove the multitude of useless spans.
     text = replace_regex(r'<\/?span[^>]*>', '', text)
 
-    #remove &nbsp;
+    # Remove &nbsp;.
     text = replace_regex(r'&nbsp;', ' ', text)
 
-    # put headings on one line
+    # Put headings on one line.
     text = replace_regex(r'<h([1-5])>\n([^<]*)<\/h\1>',
                          r'\n<h\1>\2</h\1>', text)
 
-    # remove class divs
+    # Remove class divs.
     text = replace_regex(r'<\/?div[^>]*>', '', text)
 
-    # remove div encapsulated brs
+    # Remove div encapsulated brs.
     text = replace_regex(r'<div>\s*<br \/>\s*<\/div>', '</ br>', text)
 
-    #remove brs within heading tags
+    # Remove brs within heading tags.
     text = replace_regex(r'<h([1-5])>\s*(<br \/>)([^<]*)<\/h\1>',
-                        r'<h\1>\3</h\1>', text)
+                         r'<h\1>\3</h\1>', text)
 
-    # remove empty tags eg <pre></pre>
+    # Remove empty tags eg <pre></pre>.
     text = replace_regex(r'<([^>]*)>\s*<\/\1>', '', text)
 
-    #remove unclosed HTML tags
+    # Remove unclosed HTML tags.
     text = remove_unclosed(text)
 
     with open(dirty_file + '_cleaned', 'w+') as f:
@@ -42,10 +42,10 @@ def main():
 def fix_formatting(text):
     """Fixes aesthetic formatting of text"""
 
-    # make sure <br \> tags have one line above and below
+    # Make sure <br \> tags have one line above and below.
     text = replace_regex(r'(\s*<br \/>\s*)', r'\n\1\n', text)
 
-    # remove multiple \n
+    # Remove multiple \n.
     text = replace_regex(r'\n{2,}', r'\n', text)
 
     return text
@@ -57,6 +57,7 @@ def replace_regex(regex, repl, text):
     replaced = replacer.sub(repl, text)
 
     return replaced
+
 
 def remove_unclosed(text):
     """removed all unclosed HTML tags"""
@@ -75,14 +76,16 @@ def find_next_unclosed(text):
     """Finds the next unclosed HTML tag"""
     tag_stack = []
 
-    tag_regex= re.compile(r'<[^>]*>', re.DOTALL)
+    # Get an iterator of all tags in file.
+    tag_regex = re.compile(r'<[^>]*>', re.DOTALL)
     tags = tag_regex.finditer(text)
 
     for tag in tags:
-        #If it is a closing tag check if it matches the last opening tag
+        # If it is a closing tag check if it matches the last opening tag.
         if re.match(r'<\/[^>]*>', tag.group()):
+            top_tag = tag_stack[-1]
 
-            if tag_match(tag_stack[-1].group(), tag.group()):
+            if tag_match(top_tag.group(), tag.group()):
                 tag_stack.pop()
             else:
                 unclosed = tag_stack.pop()
@@ -92,10 +95,16 @@ def find_next_unclosed(text):
 
 
 def tag_match(tag1, tag2):
+    """Checks to see if tags are open/closing tag pairs"""
+
+    # [1:] is for opening tag (<div> -> div>),
+    # [2:] for closing (</div> -> div>).
     if get_pure_tag(tag1)[1:] == get_pure_tag(tag2)[2:]:
         return True
 
+
 def get_pure_tag(tag):
+    """Returns the base tag with no ids, classes, etc."""
     pure_tag = re.sub(r'<(\/?\S*)[^>]*>', r'<\1>', tag)
 
     return pure_tag
