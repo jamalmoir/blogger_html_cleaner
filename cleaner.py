@@ -61,7 +61,6 @@ def replace_regex(regex, repl, text):
 def remove_unclosed(text):
     """removed all unclosed HTML tags"""
     unclosed = find_next_unclosed(text)
-    print(str(unclosed))
 
     if unclosed:
         start, end = unclosed
