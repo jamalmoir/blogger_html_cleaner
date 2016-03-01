@@ -61,10 +61,11 @@ def replace_regex(regex, repl, text):
 def remove_unclosed(text):
     """removed all unclosed HTML tags"""
     unclosed = find_next_unclosed(text)
+    print(str(unclosed))
 
     if unclosed:
         start, end = unclosed
-        text = text[:start].append(text[end:])
+        text = ''.join([text[:start], text[end:]])
 
         return remove_unclosed(text)
 
@@ -75,11 +76,10 @@ def find_next_unclosed(text):
     """Finds the next unclosed HTML tag"""
     tag_stack = []
 
-    tag_regex= re.compile(r'(<[^>]*>)', re.DOTALL)
+    tag_regex= re.compile(r'<[^>]*>', re.DOTALL)
     tags = tag_regex.finditer(text)
 
     for tag in tags:
-        print(tag_stack)
         #If it is a closing tag check if it matches the last opening tag
         if re.match(r'<\/[^>]*>', tag.group()):
 
@@ -87,7 +87,7 @@ def find_next_unclosed(text):
                 tag_stack.pop()
             else:
                 unclosed = tag_stack.pop()
-                return (unclosed.start, unclosed.end)
+                return (unclosed.start(), unclosed.end())
         else:
             tag_stack.append(tag)
 
