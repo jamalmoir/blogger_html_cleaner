@@ -101,6 +101,8 @@ def tag_match(tag1, tag2):
     # [2:] for closing (</div> -> div>).
     if get_pure_tag(tag1)[1:] == get_pure_tag(tag2)[2:]:
         return True
+    else:
+        return False
 
 
 def get_pure_tag(tag):

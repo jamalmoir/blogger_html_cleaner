@@ -1,13 +1,13 @@
 <html>
     <head><title>TEST</title></head>
-	<body>
-		<h1>This is a test</h1>
-		<test class="unclosed">
-			<test>
-				<pre>
+    <body>
+        <h1>This is a test</h1>
+        <test class="unclosed">
+            <test>
+                <pre>
 this is a test2
-				</pre>
-			</test>
-			<test class="unclosed">
-	</body>
+                </pre>
+            </test>
+            <test class="unclosed">
+    </body>
 </html>
