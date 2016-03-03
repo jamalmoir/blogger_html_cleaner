@@ -25,7 +25,6 @@ class TestTagTools():
         assert blogger_html_cleaner.cleaner.tag_match(tag3, tag3) == False
         assert blogger_html_cleaner.cleaner.tag_match(tag3, tag4) == True
 
-
 class TestUnclosedTagRemover():
 
     def test_find_next_unclosed(self):
@@ -36,3 +35,17 @@ class TestUnclosedTagRemover():
 
         unclosed = blogger_html_cleaner.cleaner.find_next_unclosed(text)
         assert unclosed == (231, 254)
+
+    def test_remove_unclosed(self):
+        text = ''
+        expected = ''
+
+        with open('unclosed') as f:
+            text = f.read()
+
+        with open('unclosed_expected') as f:
+            expected = f.read()
+
+        removed = blogger_html_cleaner.cleaner.remove_unclosed(text)
+
+        assert removed == expected
