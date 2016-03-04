@@ -2,6 +2,30 @@ import pytest
 from .context import blogger_html_cleaner
 
 
+class TestTextManipulation():
+
+    def test_replace_regex(self):
+        string1 = "This is a<div class='remove'> test<remove>"
+        string2 = "This is a banana"
+        string3 = """What will happen to this mango, that is on
+        multiple lines. Will this mango work?"""
+
+        expected1 = "This is a test"
+        expected2 = "This is a test"
+        expected3 = """What will happen to this test, that is on
+        multiple lines. Will this test work?"""
+
+        replaced1 = blogger_html_cleaner.cleaner.replace_regex(r'<[^>]*>', ''
+                                                              ,string1)
+        replaced2 = blogger_html_cleaner.cleaner.replace_regex(r'banana'
+                                                              ,'test', string2)
+        replaced3 = blogger_html_cleaner.cleaner.replace_regex(r'mango', 'test'
+                                                              , string3)
+
+        assert replaced1 == expected1
+        assert replaced2 == expected2
+        assert replaced3 == expected3
+
 class TestTagTools():
 
     def test_get_pure_tag(self):
