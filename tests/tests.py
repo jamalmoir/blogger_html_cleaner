@@ -58,6 +58,7 @@ class TestUnclosedTagRemover():
             text = f.read()
 
         unclosed = blogger_html_cleaner.cleaner.find_next_unclosed(text)
+
         assert unclosed == (231, 254)
 
     def test_remove_unclosed(self):
@@ -71,5 +72,29 @@ class TestUnclosedTagRemover():
             expected = f.read()
 
         removed = blogger_html_cleaner.cleaner.remove_unclosed(text)
+
+        assert removed == expected
+
+    def test_find_next_unopened(self):
+        text = ''
+
+        with open('unopened') as f:
+            text = f.read()
+
+        unopened = blogger_html_cleaner.cleaner.find_next_unopened(text)
+
+        assert unopened == (232, 256)
+
+    def test_remove_unopened(self):
+        text = ''
+        expected = ''
+
+        with open('unopened') as f:
+            text = f.read()
+
+        with open('unopened_expected') as f:
+            expected = f.read()
+
+        removed = blogger_html_cleaner.cleaner.remove_unopened(text)
 
         assert removed == expected
