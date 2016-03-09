@@ -1,0 +1,90 @@
+Although not the first language I picked up, I've really taken a liking to Python, especially recently. I've tried out many languages and Python is one of the languages that I find the most fun to program in. One of the reasons I enjoy programming in it so much is that Python code is neat, minimalistic and beautiful.<br /><br />The syntax of the language is fantastic, but when you start changing the way you write code to be more 'pythonic', that's when the real beauty kicks in. Pythonic code is code that makes use of the multitudes of 'python idioms' that exist, a python idiom being a specific way to code that is, well... pythonic.<br /><br />This is the first in a series of posts on common pythonic idioms. Let's kick it off with for loops.<div>
+<br /><br /><h3>
+<span style="font-family: &quot;helvetica neue&quot; , &quot;arial&quot; , &quot;helvetica&quot; , sans-serif;">HOW NOT TO WRITE FOR LOOPS (AND THEIR PYTHONIC COUNTERPARTS)</span></h3>
+<div>
+</div>
+<br />For loops are used a lot, and the following pythonic idioms for these common uses are often actually faster than their non-pythonic counterparts. Not to mention they are extremely readable.<br /><br />Note that I refer to a 'sequence' a lot in this post. A sequence is a python type; a list, tuple or range object.</div>
+<div>
+<br /></div>
+<div>
+<br /><h4>
+<span style="font-family: &quot;helvetica neue&quot; , &quot;arial&quot; , &quot;helvetica&quot; , sans-serif;">LOOPING OVER A RANGE OF VALUES</span></h4>
+<div>
+<br /></div>
+One common use of a for loop is to iterate over a range of values.<div>
+<pre></pre>
+<pre class="prettyprint">#This is how not to iterate over a range of values
+for i in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
+    #do stuff
+
+#This is how to iterate over a range of values
+for i in range(11):
+    #do stuff</pre>
+</div>
+<div>
+</div>
+<div class="blob-wrapper data type-python" itemprop="text" style="border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; box-sizing: border-box; overflow-x: auto; overflow-y: hidden;">
+<br />As you can see here the range() function is used. It loops up to but not including the value you pass it. You can provide just a stop value or a start, end and optionally step value too. For more information on the range function, take a look at the <a href="https://docs.python.org/3/library/functions.html#func-range">Python documentation</a>.</div>
+<div class="blob-wrapper data type-python" itemprop="text" style="border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; box-sizing: border-box; overflow-x: auto; overflow-y: hidden;">
+<br /><br />
+<h4>
+<span style="font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;">LOOPING OVER A SEQUENCE, USING BOTH THE INDEXES AND VALUES</span></h4>
+</div>
+<div class="blob-wrapper data type-python" itemprop="text" style="border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; box-sizing: border-box; overflow-x: auto; overflow-y: hidden;">
+<br />
+Another common use of a for loop is to loop over a sequence, doing things with its index and value pairs.<br />
+<br />
+<pre class="prettyprint">#This is not how to iterate over a list and use indexes and values
+for i in range(len(array)):
+    #do stuff with i
+    #do stuff with array[i]
+
+#This is how to iterate over a list and use indexes and values
+for i, val in enumerate(array):
+    #do stuff with i
+    #do stuff with val</pre>
+<br /></div>
+<div class="blob-wrapper data type-python" itemprop="text" style="border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; box-sizing: border-box; overflow-x: auto; overflow-y: hidden;">
+The&nbsp;<span class="pl-c1" style="background-color: white; box-sizing: border-box; color: #0086b3; font-family: &quot;consolas&quot; , &quot;liberation mono&quot; , &quot;menlo&quot; , &quot;courier&quot; , monospace; line-height: 18.2px; white-space: pre;">enumerate</span><span style="background-color: white; color: #333333; font-family: &quot;consolas&quot; , &quot;liberation mono&quot; , &quot;menlo&quot; , &quot;courier&quot; , monospace; line-height: 18.2px; white-space: pre;">()</span>&nbsp;function returns a tuple of the current index and value pair for each iteration of the for loop which are unpacked into the two variables before it; in this case i and val. You can also pass an offset value to enumerate to start the index count from a number other than 0. For more information on the enumerate function, take a look at the <a href="https://docs.python.org/3/library/functions.html#enumerate" target="_blank">Python documentation</a>.<br />
+<span style="font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;"><br /></span>
+<span style="font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;"><br /></span>
+<h4>
+<span style="font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;">LOOPING OVER A SEQUENCE IN REVERSE ORDER</span></h4>
+<div class="blob-wrapper data type-python" itemprop="text" style="border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; box-sizing: border-box; overflow-x: auto; overflow-y: hidden;">
+<br /></div>
+The final common use of a for loop that we will go over in this post is looping over a sequence in reverse order.</div>
+<div class="blob-wrapper data type-python" itemprop="text" style="border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; box-sizing: border-box; overflow-x: auto; overflow-y: hidden;">
+<br />
+<pre class="prettyprint">#This is not how to iterate over a list in reverse order
+for val in range(len(array) - 1, -1, -1):
+    #do stuff
+
+#This is how to itereate over a list in reverse order
+for val in reversed(array)
+    #do stuff</pre>
+<br /></div>
+<div class="blob-wrapper data type-python" itemprop="text" style="border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; box-sizing: border-box; overflow-x: auto; overflow-y: hidden;">
+The&nbsp;<span class="pl-c1" style="background-color: white; box-sizing: border-box; color: #0086b3; font-family: &quot;consolas&quot; , &quot;liberation mono&quot; , &quot;menlo&quot; , &quot;courier&quot; , monospace; line-height: 18.2px; white-space: pre;">reversed</span><span style="background-color: white; color: #333333; font-family: &quot;consolas&quot; , &quot;liberation mono&quot; , &quot;menlo&quot; , &quot;courier&quot; , monospace; line-height: 18.2px; white-space: pre;">()</span><span style="background-color: white; color: #333333; font-family: &quot;consolas&quot; , &quot;liberation mono&quot; , &quot;menlo&quot; , &quot;courier&quot; , monospace; font-size: 12px; line-height: 18.2px; white-space: pre;"> </span>function simply iterates over a sequence backwards. There's not really much more to know about it, but if you would like to read more about it, take a look at the <a href="https://docs.python.org/3/library/functions.html#reversed" target="_blank">Python documentation</a>.</div>
+<div class="blob-wrapper data type-python" itemprop="text" style="border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; box-sizing: border-box; overflow-x: auto; overflow-y: hidden;">
+<br /></div>
+<div class="blob-wrapper data type-python" itemprop="text" style="border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; box-sizing: border-box; overflow-x: auto; overflow-y: hidden;">
+<br /></div>
+<div class="blob-wrapper data type-python" itemprop="text" style="border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; box-sizing: border-box; overflow-x: auto; overflow-y: hidden;">
+So there we have it, three common pythonic idioms for for loops. Hopefully you have learnt something from this as I did and gained the power to write more pythonic code.</div>
+<div class="blob-wrapper data type-python" itemprop="text" style="border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; box-sizing: border-box; overflow-x: auto; overflow-y: hidden;">
+<br /></div>
+<div class="blob-wrapper data type-python" itemprop="text" style="border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; box-sizing: border-box; overflow-x: auto; overflow-y: hidden;">
+This was the first in a series of posts on common pythonic idioms. Subscribe to my feed to make sure you don't miss the next ones.<br />
+<br /></div>
+<h4>
+<span style="font-family: &quot;helvetica neue&quot; , &quot;arial&quot; , &quot;helvetica&quot; , sans-serif;"><br />Other posts in this series:</span></h4>
+<div>
+<ul>
+<li><a href="http://www.jamalmoir.com/2016/02/pythonic-lists.html" target="_blank">How to Write Beautiful Code with Pythonic Idioms | Lists</a><span id="goog_878523045"></span><span id="goog_878523046"></span><a href="https://www.blogger.com/"></a></li>
+<li><a href="http://www.jamalmoir.com/2016/02/pythonic-unpacking.html">How to Write Beautiful Code with Pythonic Idioms | Unpacking</a></li>
+<li><a href="http://www.jamalmoir.com/2016/02/pythonic-dictionaries.html">How to Write Beautiful Code with Pythonic Idioms | Dictionaries</a></li>
+<li><a href="http://www.jamalmoir.com/2016/02/pythonic-idioms-others.html">How to Write Beautiful Code with Pythonic Idioms | Notable Others</a></li>
+</ul>
+</div>
+</div>
+
